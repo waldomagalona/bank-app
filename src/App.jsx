@@ -1,61 +1,52 @@
 import "./App.scss";
 import React from "react";
+import {useEffect, useState} from "react";
 
 import { Login, Register } from "./components/login/index";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLogginActive: true
-    };
+const App = (props) => {
+  const [isLogginActive] = useState(false);
+  const current = isLogginActive ? "Register" : "Login";
+  const currentActive = isLogginActive ? "login" : "register";
+  const componentDidMount = () => {
+    RightSide.rightSide.classList.add("right");
   }
 
-  componentDidMount() {
-    this.rightSide.classList.add("right");
-  }
-
-  changeState() {
-    const { isLogginActive } = this.state;
-
+  const changeState = () => {
+    const { isLogginActive } = useState;
     if (isLogginActive) {
-      this.rightSide.classList.remove("right");
-      this.rightSide.classList.add("left");
-    } else {
-      this.rightSide.classList.remove("left");
-      this.rightSide.classList.add("right");
+      RightSide.rightSide.classList.remove("right");
+      RightSide.rightSide.classList.add("left");
+    } 
+    else {
+      RightSide.rightSide.classList.remove("left");
+      RightSide.rightSide.classList.add("right");
     }
-    this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
-  }
+    isLogginActive.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
 
-  render() {
-    const { isLogginActive } = this.state;
-    const current = isLogginActive ? "Register" : "Login";
-    const currentActive = isLogginActive ? "login" : "register";
-    return (
-      <div className="App">
-        <div className="login">
-          <div className="container" ref={ref => (this.container = ref)}>
-            {isLogginActive && (
-              <Login containerRef={ref => (this.current = ref)} />
-            )}
-            {!isLogginActive && (
-              <Register containerRef={ref => (this.current = ref)} />
-            )}
-          </div>
-          <RightSide
-            current={current}
-            currentActive={currentActive}
-            containerRef={ref => (this.rightSide = ref)}
-            onClick={this.changeState.bind(this)}
-          />
+  }
+  return (
+    <div className="App">
+      <div className="login">
+        <div className="container" ref={ref => (RightSide.container = ref)}>
+          {isLogginActive && (
+            <Login containerRef={ref => (current = ref)} />
+          )}
+          {!isLogginActive && (
+            <Register containerRef={ref => (current = ref)} />
+          )}
         </div>
+        <RightSide
+          current={current}
+          currentActive={currentActive}
+          containerRef={ref => (RightSide.rightSide = ref)}
+          onClick={useState.changeState}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-const RightSide = props => {
+  const RightSide = (props) => {
   return (
     <div
       className="right-side"
@@ -67,6 +58,6 @@ const RightSide = props => {
       </div>
     </div>
   );
-};
+}
 
 export default App;
